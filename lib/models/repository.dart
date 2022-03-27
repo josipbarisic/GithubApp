@@ -1,4 +1,5 @@
 import 'package:flutter_github_app/models/base_model.dart';
+import 'package:intl/intl.dart';
 
 import 'user.dart';
 
@@ -24,6 +25,8 @@ class Repository extends BaseModel<Repository> {
   final String forksUrl;
   final int numberOfStars;
   final int numberOfIssues;
+
+  String get formattedUpdatedAt => DateFormat('dd MMM y').format(updatedAt);
 
   factory Repository.fromJson(Map<String, dynamic> json) => Repository(
       name: json['full_name'] ?? '',

@@ -53,6 +53,9 @@ dependencies:
   # https://pub.dev/packages/dio
   dio: ^4.0.4
 
+  # https://pub.dev/packages/intl
+  intl: ^0.17.0
+
 dev_dependencies:
   #https://pub.dev/packages/build_runner
   build_runner:
