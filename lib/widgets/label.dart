@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class Label extends StatelessWidget {
@@ -19,7 +20,7 @@ class Label extends StatelessWidget {
   final TextAlign? textAlign;
 
   @override
-  Widget build(BuildContext context) => Text(
+  Widget build(BuildContext context) => AutoSizeText(
         text,
         style: fontStyle ??
             TextStyle(
@@ -28,5 +29,6 @@ class Label extends StatelessWidget {
               fontWeight: fontWeight,
             ),
         textAlign: textAlign,
+        maxLines: 1,
       );
 }

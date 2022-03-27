@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_github_app/models/enums/repo_sort.dart';
 import 'package:flutter_github_app/models/repository.dart';
 import 'package:flutter_github_app/services/mixins/search_service_mixin.dart';
 import 'package:stacked/stacked.dart';
@@ -14,6 +14,37 @@ class HomeViewModel extends ReactiveViewModel with SearchServiceMixin {
 
   List<Repository> get repoResults =>
       searchService.getRxModelValue().repoResults;
+
+  List<Repository> get sortedRepoResults {
+    List<Repository> repoListReplacement = List<Repository>.from(repoResults);
+    switch (RepoSort.values.firstWhere((sort) => sort.name == sortValue)) {
+      case RepoSort.mostStars:
+        repoListReplacement
+            .sort((a, b) => b.numberOfStars.compareTo(a.numberOfStars));
+        break;
+      case RepoSort.fewestStars:
+        repoListReplacement
+            .sort((a, b) => a.numberOfStars.compareTo(b.numberOfStars));
+        break;
+      case RepoSort.mostForks:
+        repoListReplacement
+            .sort((a, b) => b.numberOfForks.compareTo(a.numberOfForks));
+        break;
+      case RepoSort.fewestForks:
+        repoListReplacement
+            .sort((a, b) => a.numberOfForks.compareTo(b.numberOfForks));
+        break;
+      case RepoSort.recentlyUpdate:
+        repoListReplacement.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+        break;
+      case RepoSort.leastRecentlyUpdate:
+        repoListReplacement.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+        break;
+      default:
+        return repoResults;
+    }
+    return repoListReplacement;
+  }
 
   bool _searchAnimated = false;
 
@@ -42,6 +73,15 @@ class HomeViewModel extends ReactiveViewModel with SearchServiceMixin {
     notifyListeners();
   }
 
+  String? _sortValue = RepoSort.bestMatch.name;
+
+  String? get sortValue => _sortValue;
+
+  set sortValue(String? sortValue) {
+    _sortValue = sortValue;
+    notifyListeners();
+  }
+
   Future<void> fetchRepositories() async {
     if (searchInput.isEmpty || isBusy) return;
     if (firstUse) firstUse = false;
@@ -53,7 +93,5 @@ class HomeViewModel extends ReactiveViewModel with SearchServiceMixin {
     setBusy(false);
   }
 
-  void clearSearchResults() {
-    searchService.clearRepoList();
-  }
+  void changeSortValue(String? sort) => sortValue = sort;
 }

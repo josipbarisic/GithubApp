@@ -28,14 +28,10 @@ class RepositoryItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Label(
-                  text: repo.name,
-                  fontSize: 16,
-                  textColor: Colors.blue,
-                ),
-              ],
+            Label(
+              text: repo.name,
+              fontSize: 16,
+              textColor: Colors.blue,
             ),
             const SizedBox(
               height: 10,

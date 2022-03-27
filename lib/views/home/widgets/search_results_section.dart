@@ -28,7 +28,7 @@ class SearchResultsSection extends HookViewModelWidget<HomeViewModel> {
                         shrinkWrap: true,
                         itemCount: viewModel.repoResults.length,
                         itemBuilder: (context, index) => RepositoryItem(
-                          repo: viewModel.repoResults[index],
+                          repo: viewModel.sortedRepoResults[index],
                         ),
                       ),
                     ],

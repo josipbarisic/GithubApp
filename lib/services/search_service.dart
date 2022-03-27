@@ -33,8 +33,4 @@ class SearchService extends BaseService<SearchResults>
       );
     }
   }
-
-  void clearRepoList() {
-    getRxModelValue().repoResults.clear();
-  }
 }

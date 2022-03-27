@@ -70,7 +70,12 @@ class _HomeViewState extends State<HomeView>
           ),
           body: SafeArea(
             child: GestureDetector(
-              onTap: () => viewModel.searchInputFocusNode.unfocus(),
+              onTap: () {
+                animationController.reverse();
+                viewModel.searchInputFocusNode.unfocus();
+                viewModel.isSearchAnimated = false;
+              },
+              behavior: HitTestBehavior.translucent,
               child: Flex(
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.center,
