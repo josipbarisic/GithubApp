@@ -7,6 +7,7 @@ class Label extends StatelessWidget {
     this.fontSize = 14,
     this.fontWeight = FontWeight.normal,
     this.fontStyle,
+    this.textAlign = TextAlign.start,
     Key? key,
   }) : super(key: key);
 
@@ -15,6 +16,7 @@ class Label extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final TextStyle? fontStyle;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) => Text(
@@ -25,5 +27,6 @@ class Label extends StatelessWidget {
               fontSize: fontSize,
               fontWeight: fontWeight,
             ),
+        textAlign: textAlign,
       );
 }

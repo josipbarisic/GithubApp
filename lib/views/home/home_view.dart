@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_github_app/globals/colors.dart';
+import 'package:flutter_github_app/views/home/widgets/search_results_section.dart';
 import 'package:flutter_github_app/widgets/label.dart';
 import 'package:stacked/stacked.dart';
 
 import 'home_viewmodel.dart';
-import 'widgets/repository_item.dart';
+import 'widgets/search_input.dart';
+import 'widgets/toggle_search_button.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -17,7 +19,6 @@ class _HomeViewState extends State<HomeView>
     with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController animationController;
-  FocusNode searchInputFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -27,14 +28,14 @@ class _HomeViewState extends State<HomeView>
         duration: const Duration(milliseconds: 100), vsync: this);
     final CurvedAnimation curvedAnimation =
         CurvedAnimation(parent: animationController, curve: Curves.linear);
-    animation = Tween<double>(begin: 0, end: 150).animate(curvedAnimation)
+    animation = Tween<double>(begin: 0, end: 200).animate(curvedAnimation)
       ..addListener(() {
         setState(() {});
       });
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder.reactive(
+  Widget build(BuildContext context) => ViewModelBuilder.nonReactive(
         viewModelBuilder: () => HomeViewModel(),
         builder: (
           BuildContext context,
@@ -61,106 +62,29 @@ class _HomeViewState extends State<HomeView>
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
+                  const Spacer(),
+                  ToggleSearchButton(),
                 ],
               ),
             ),
           ),
           body: SafeArea(
-            child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    if (viewModel.isSearchAnimated) {
-                      animationController.reverse();
-                      viewModel.isSearchAnimated = false;
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    }
-                  },
-                  behavior: HitTestBehavior.translucent,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: animation.value,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              bottomLeft: Radius.circular(30),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20, bottom: 5),
-                            child: TextField(
-                              onChanged: (String searchInput) {
-                                viewModel.searchInput = searchInput;
-                              },
-                              focusNode: searchInputFocusNode,
-                              cursorColor: Colors.white12,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                              onSubmitted: (_) => viewModel.fetchRepositories(),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: animation.value > 1
-                                ? const BorderRadius.only(
-                                    topLeft: Radius.circular(0),
-                                    bottomLeft: Radius.circular(0),
-                                    topRight: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                  )
-                                : BorderRadius.circular(30),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              if (!viewModel.isSearchAnimated) {
-                                animationController.forward().then((value) =>
-                                    searchInputFocusNode.requestFocus());
-                                viewModel.isSearchAnimated = true;
-                              } else {
-                                viewModel.fetchRepositories();
-                              }
-                            },
-                            splashColor: viewModel.isSearchAnimated
-                                ? primaryColor
-                                : Colors.transparent,
-                            icon: const Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+            child: GestureDetector(
+              onTap: () => viewModel.searchInputFocusNode.unfocus(),
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SearchInput(
+                    animationController: animationController,
+                    animation: animation,
                   ),
-                ),
-                if (viewModel.repoResults.isNotEmpty)
                   Flexible(
-                    fit: FlexFit.tight,
-                    child: SingleChildScrollView(
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: viewModel.repoResults.length,
-                        itemBuilder: (context, index) => RepositoryItem(
-                          repo: viewModel.repoResults[index],
-                        ),
-                      ),
-                    ),
+                    fit: FlexFit.loose,
+                    child: SearchResultsSection(),
                   )
-              ],
+                ],
+              ),
             ),
           ),
         ),
