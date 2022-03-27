@@ -44,8 +44,8 @@ class NetworkService {
         options: Options(headers: headers),
       );
       return response;
-    } catch (e) {
-      log('Exception caught in POST $url: $e');
+    } on DioError catch (dioError, _) {
+      log('Exception caught in POST $url: ${dioError.message}, Response: ${dioError.response}');
       return null;
     }
   }
