@@ -7,10 +7,12 @@ import 'package:flutter_github_app/widgets/label.dart';
 class RepositoryItem extends StatelessWidget {
   const RepositoryItem({
     required this.repo,
+    required this.onUserTap,
     Key? key,
   }) : super(key: key);
 
   final Repository repo;
+  final Function() onUserTap;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -36,22 +38,25 @@ class RepositoryItem extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    repo.owner.avatarUrl,
-                    fit: BoxFit.fill,
-                    width: 30,
-                    height: 30,
+            InkWell(
+              onTap: onUserTap,
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      repo.owner.avatarUrl,
+                      fit: BoxFit.fill,
+                      width: 30,
+                      height: 30,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Label(text: repo.owner.username),
-              ],
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Label(text: repo.owner.username),
+                ],
+              ),
             ),
             const SizedBox(
               height: 15,

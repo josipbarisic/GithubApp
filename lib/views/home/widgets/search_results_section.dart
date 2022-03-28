@@ -29,6 +29,8 @@ class SearchResultsSection extends HookViewModelWidget<HomeViewModel> {
                         itemCount: viewModel.repoResults.length,
                         itemBuilder: (context, index) => RepositoryItem(
                           repo: viewModel.sortedRepoResults[index],
+                          onUserTap: () => viewModel.navigateToUserScreen(
+                              viewModel.sortedRepoResults[index].owner),
                         ),
                       ),
                     ],

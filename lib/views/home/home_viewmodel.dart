@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_github_app/app/app.router.dart';
 import 'package:flutter_github_app/models/enums/repo_sort.dart';
 import 'package:flutter_github_app/models/repository.dart';
+import 'package:flutter_github_app/models/user.dart';
+import 'package:flutter_github_app/services/mixins/navigation_service_mixin.dart';
 import 'package:flutter_github_app/services/mixins/search_service_mixin.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeViewModel extends ReactiveViewModel with SearchServiceMixin {
+class HomeViewModel extends ReactiveViewModel
+    with SearchServiceMixin, NavigationServiceMixin {
   @override
   List<ReactiveServiceMixin> get reactiveServices => [searchService];
 
@@ -94,4 +98,7 @@ class HomeViewModel extends ReactiveViewModel with SearchServiceMixin {
   }
 
   void changeSortValue(String? sort) => sortValue = sort;
+
+  void navigateToUserScreen(User owner) => navigationService
+      .navigateTo(Routes.userView, arguments: UserViewArguments(user: owner));
 }
