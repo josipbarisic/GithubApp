@@ -91,7 +91,7 @@ class HomeViewModel extends ReactiveViewModel
     if (firstUse) firstUse = false;
     setBusy(true);
     await searchService.fetchRepositories(queryString: searchInput);
-    showSearchInput = false;
+    if (repoResults.isNotEmpty) showSearchInput = false;
     searchInput = '';
 
     setBusy(false);

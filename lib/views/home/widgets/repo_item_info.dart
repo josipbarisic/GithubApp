@@ -17,21 +17,23 @@ class RepoItemInfo extends StatelessWidget {
   final Color textColor;
 
   @override
-  Widget build(BuildContext context) => Wrap(
-        direction: Axis.horizontal,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          Icon(
-            iconData,
-            color: iconColor,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Label(
-            text: labelText,
-            textColor: textColor,
-          ),
-        ],
-      );
+  Widget build(BuildContext context) => labelText.isNotEmpty
+      ? Wrap(
+          direction: Axis.horizontal,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              color: iconColor,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Label(
+              text: labelText,
+              textColor: textColor,
+            ),
+          ],
+        )
+      : const Offstage();
 }

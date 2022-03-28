@@ -36,7 +36,7 @@ class SearchResultsSection extends HookViewModelWidget<HomeViewModel> {
                     ],
                   ),
                 )
-              : viewModel.showSearchInput
+              : viewModel.showSearchInput && viewModel.firstUse
                   ? const Offstage()
                   : const Center(
                       child: Padding(

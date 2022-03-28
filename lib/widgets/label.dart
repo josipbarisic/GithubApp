@@ -9,6 +9,7 @@ class Label extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     this.fontStyle,
     this.textAlign = TextAlign.start,
+    this.maxLines = 1,
     Key? key,
   }) : super(key: key);
 
@@ -17,7 +18,8 @@ class Label extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final TextStyle? fontStyle;
-  final TextAlign? textAlign;
+  final TextAlign textAlign;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) => AutoSizeText(
@@ -28,7 +30,8 @@ class Label extends StatelessWidget {
               fontSize: fontSize,
               fontWeight: fontWeight,
             ),
+        overflow: TextOverflow.ellipsis,
         textAlign: textAlign,
-        maxLines: 1,
+        maxLines: maxLines,
       );
 }

@@ -8,11 +8,13 @@ class RepositoryItem extends StatelessWidget {
   const RepositoryItem({
     required this.repo,
     required this.onUserTap,
+    this.isUserProfileRepo = false,
     Key? key,
   }) : super(key: key);
 
   final Repository repo;
   final Function() onUserTap;
+  final bool isUserProfileRepo;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -31,33 +33,39 @@ class RepositoryItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Label(
-              text: repo.name,
+              text: isUserProfileRepo ? repo.name : repo.fullName,
               fontSize: 16,
               textColor: Colors.blue,
             ),
             const SizedBox(
               height: 10,
             ),
-            InkWell(
-              onTap: onUserTap,
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      repo.owner.avatarUrl,
-                      fit: BoxFit.fill,
-                      width: 30,
-                      height: 30,
+            isUserProfileRepo
+                ? Label(
+                    text: repo.description,
+                    textColor: accentColor,
+                    maxLines: 2,
+                  )
+                : InkWell(
+                    onTap: onUserTap,
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            repo.owner.avatarUrl,
+                            fit: BoxFit.fill,
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Label(text: repo.owner.username),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Label(text: repo.owner.username),
-                ],
-              ),
-            ),
             const SizedBox(
               height: 15,
             ),

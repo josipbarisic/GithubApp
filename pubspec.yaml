@@ -59,6 +59,9 @@ dependencies:
   # https://pub.dev/packages/auto_size_text
   auto_size_text: ^3.0.0
 
+  # https://pub.dev/packages/url_launcher
+  url_launcher: ^6.0.20
+
 dev_dependencies:
   #https://pub.dev/packages/build_runner
   build_runner:
