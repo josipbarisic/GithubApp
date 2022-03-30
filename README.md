@@ -1,16 +1,14 @@
-# flutter_github_app
+# GithubApp
 
 A flutter github app.
 
-## Getting Started
+## Note:
 
-This project is a starting point for a Flutter application.
+If you want a higher request rate per hour access to github API, create .env file in project root with following content:
 
-A few resources to get you started if this is your first Flutter project:
+*GITHUB_API_TOKEN='<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>'*
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Without the token, request rate is limited to 10-60 requests/h, and with it, it's 30-5000 requests/h depending on the endpoint.
+
+*Code owner:* Josip Barišić
