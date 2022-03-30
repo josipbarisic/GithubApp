@@ -2,7 +2,7 @@
 
 A flutter github app.
 
-## Setup
+## Note:
 
 If you want a higher request rate per hour access to github API, create .env file in project root with following content:
 
