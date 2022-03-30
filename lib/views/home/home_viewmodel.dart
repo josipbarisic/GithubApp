@@ -101,4 +101,7 @@ class HomeViewModel extends ReactiveViewModel
 
   void navigateToUserScreen(User owner) => navigationService
       .navigateTo(Routes.userView, arguments: UserViewArguments(user: owner));
+
+  void navigateToRepoScreen(Repository repo) => navigationService
+      .navigateTo(Routes.repoView, arguments: RepoViewArguments(repo: repo));
 }

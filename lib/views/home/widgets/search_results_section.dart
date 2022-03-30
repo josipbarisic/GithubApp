@@ -31,6 +31,9 @@ class SearchResultsSection extends HookViewModelWidget<HomeViewModel> {
                           repo: viewModel.sortedRepoResults[index],
                           onUserTap: () => viewModel.navigateToUserScreen(
                               viewModel.sortedRepoResults[index].owner),
+                          onRepoTap: () => viewModel.navigateToRepoScreen(
+                            viewModel.sortedRepoResults[index],
+                          ),
                         ),
                       ),
                     ],

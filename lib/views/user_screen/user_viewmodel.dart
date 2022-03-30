@@ -1,3 +1,4 @@
+import 'package:flutter_github_app/app/app.router.dart';
 import 'package:flutter_github_app/models/repository.dart';
 import 'package:flutter_github_app/models/user.dart';
 import 'package:flutter_github_app/services/mixins/navigation_service_mixin.dart';
@@ -25,4 +26,7 @@ class UserViewModel extends ReactiveViewModel
   void openProfileInBrowser() async => await launch(userData.profileUrl);
 
   void navigateBack() => navigationService.back();
+
+  void navigateToRepoScreen(Repository repo) => navigationService
+      .navigateTo(Routes.repoView, arguments: RepoViewArguments(repo: repo));
 }

@@ -25,6 +25,8 @@ class UserReposSection extends HookViewModelWidget<UserViewModel> {
                     itemBuilder: (context, index) => RepositoryItem(
                       repo: viewModel.userRepos[index],
                       onUserTap: () {},
+                      onRepoTap: () => viewModel
+                          .navigateToRepoScreen(viewModel.userRepos[index]),
                       isUserProfileRepo: true,
                     ),
                   ),

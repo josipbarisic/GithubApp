@@ -1,4 +1,5 @@
 import 'package:flutter_github_app/services/network_service.dart';
+import 'package:flutter_github_app/services/repo_service.dart';
 import 'package:flutter_github_app/services/search_service.dart';
 import 'package:flutter_github_app/services/user_service.dart';
 import 'package:get_it/get_it.dart';
@@ -10,5 +11,6 @@ void setUpLocator() {
   locator.registerLazySingleton(() => NetworkService());
   locator.registerLazySingleton(() => SearchService());
   locator.registerLazySingleton(() => UserService());
+  locator.registerLazySingleton(() => RepoService());
   locator.registerLazySingleton(() => NavigationService());
 }

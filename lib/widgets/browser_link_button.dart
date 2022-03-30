@@ -18,8 +18,10 @@ class BrowserLinkButton extends StatelessWidget {
               color: accentColor.withOpacity(0.8),
               borderRadius: BorderRadius.circular(20)),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Wrap(
+            direction: Axis.horizontal,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.center,
             children: [
               Label(
                 text: btnText,
