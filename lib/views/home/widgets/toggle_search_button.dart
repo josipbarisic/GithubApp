@@ -3,9 +3,9 @@ import 'package:flutter_github_app/views/home/home_viewmodel.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 
 // ignore: use_key_in_widget_constructors
-class ToggleSearchButton extends HookViewModelWidget<HomeViewModel> {
+class ToggleSearchButton extends StackedHookView<HomeViewModel> {
   @override
-  Widget buildViewModelWidget(BuildContext context, HomeViewModel viewModel) =>
+  Widget builder(BuildContext context, HomeViewModel viewModel) =>
       !viewModel.firstUse
           ? IconButton(
               onPressed: () async {

@@ -28,11 +28,11 @@ class SearchResultsSection extends HookViewModelWidget<HomeViewModel> {
                         shrinkWrap: true,
                         itemCount: viewModel.repoResults.length,
                         itemBuilder: (context, index) => RepositoryItem(
-                          repo: viewModel.sortedRepoResults[index],
+                          repo: viewModel.repoResults[index],
                           onUserTap: () => viewModel.navigateToUserScreen(
-                              viewModel.sortedRepoResults[index].owner),
+                              viewModel.repoResults[index].owner),
                           onRepoTap: () => viewModel.navigateToRepoScreen(
-                            viewModel.sortedRepoResults[index],
+                            viewModel.repoResults[index],
                           ),
                         ),
                       ),

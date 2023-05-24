@@ -10,7 +10,10 @@ import 'package:stacked/stacked.dart';
 class HomeViewModel extends ReactiveViewModel
     with SearchServiceMixin, NavigationServiceMixin {
   @override
-  List<ReactiveServiceMixin> get reactiveServices => [searchService];
+  List<ListenableServiceMixin> get listenableServices => [searchService];
+
+  late Animation<double> animation;
+  late AnimationController animationController;
 
   bool firstUse = true;
 
@@ -19,36 +22,11 @@ class HomeViewModel extends ReactiveViewModel
   List<Repository> get repoResults =>
       searchService.getRxModelValue().repoResults;
 
-  List<Repository> get sortedRepoResults {
-    List<Repository> repoListReplacement = List<Repository>.from(repoResults);
-    switch (RepoSort.values.firstWhere((sort) => sort.name == sortValue)) {
-      case RepoSort.mostStars:
-        repoListReplacement
-            .sort((a, b) => b.numberOfStars.compareTo(a.numberOfStars));
-        break;
-      case RepoSort.fewestStars:
-        repoListReplacement
-            .sort((a, b) => a.numberOfStars.compareTo(b.numberOfStars));
-        break;
-      case RepoSort.mostForks:
-        repoListReplacement
-            .sort((a, b) => b.numberOfForks.compareTo(a.numberOfForks));
-        break;
-      case RepoSort.fewestForks:
-        repoListReplacement
-            .sort((a, b) => a.numberOfForks.compareTo(b.numberOfForks));
-        break;
-      case RepoSort.recentlyUpdate:
-        repoListReplacement.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-        break;
-      case RepoSort.leastRecentlyUpdate:
-        repoListReplacement.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
-        break;
-      default:
-        return repoResults;
-    }
-    return repoListReplacement;
-  }
+  // List<Repository> get sortedRepoResults {
+  //   List<Repository> repoListReplacement = List<Repository>.from(repoResults);
+  //
+  //   return repoListReplacement;
+  // }
 
   bool _searchAnimated = false;
 
@@ -65,6 +43,15 @@ class HomeViewModel extends ReactiveViewModel
 
   set showSearchInput(bool show) {
     _showSearchInput = show;
+    notifyListeners();
+  }
+
+  bool _showSort = false;
+
+  bool get showSort => _showSort;
+
+  set showSort(bool show) {
+    _showSort = show;
     notifyListeners();
   }
 
@@ -86,18 +73,60 @@ class HomeViewModel extends ReactiveViewModel
     notifyListeners();
   }
 
-  Future<void> fetchRepositories() async {
+  void closeSearchWidget() {
+    if (isSearchAnimated) {
+      animationController.reverse();
+      searchInputFocusNode.unfocus();
+      isSearchAnimated = false;
+    }
+  }
+
+  Future<void> fetchRepositories(String? searchTerm) async {
     if (searchInput.isEmpty || isBusy) return;
     if (firstUse) firstUse = false;
     setBusy(true);
-    await searchService.fetchRepositories(queryString: searchInput);
-    if (repoResults.isNotEmpty) showSearchInput = false;
+    await searchService.fetchRepositories(
+        queryString: searchTerm ?? searchInput);
+    if (repoResults.isNotEmpty) {
+      showSearchInput = false;
+      sortRepoResults();
+    }
     searchInput = '';
 
     setBusy(false);
   }
 
-  void changeSortValue(String? sort) => sortValue = sort;
+  void sortRepoResults() {
+    switch (RepoSort.values.firstWhere((sort) => sort.name == sortValue)) {
+      case RepoSort.mostStars:
+        repoResults.sort((a, b) => b.numberOfStars.compareTo(a.numberOfStars));
+        break;
+      case RepoSort.fewestStars:
+        repoResults.sort((a, b) => a.numberOfStars.compareTo(b.numberOfStars));
+        break;
+      case RepoSort.mostForks:
+        repoResults.sort((a, b) => b.numberOfForks.compareTo(a.numberOfForks));
+        break;
+      case RepoSort.fewestForks:
+        repoResults.sort((a, b) => a.numberOfForks.compareTo(b.numberOfForks));
+        break;
+      case RepoSort.recentlyUpdate:
+        repoResults.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+        break;
+      case RepoSort.leastRecentlyUpdate:
+        repoResults.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+        break;
+      default:
+        return;
+    }
+    notifyListeners();
+  }
+
+  void changeSortValue(String? sort) {
+    bool shouldSortResults = sortValue != sort;
+    sortValue = sort;
+    if (shouldSortResults) sortRepoResults();
+  }
 
   void navigateToUserScreen(User owner) => navigationService
       .navigateTo(Routes.userView, arguments: UserViewArguments(user: owner));

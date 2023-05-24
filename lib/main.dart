@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       navigatorKey: StackedService.navigatorKey,
       onGenerateRoute: StackedRouter(),
-      home: const HomeView(),
+      home: HomeView(),
     );
   }
 }
